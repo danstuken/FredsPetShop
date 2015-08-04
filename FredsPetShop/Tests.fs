@@ -1,16 +1,13 @@
 ﻿namespace FredsPetShop.Tests
 
-open NUnit.Framework
-open FsUnit
+open Xunit
 
-
-[<TestFixture>]
-module PetShopTests =
+type PetShopTests() =
 
     let addToTakings takingsSoFar transactionCost =
         (takingsSoFar + transactionCost)
 
-    [<Test>]
-    let testAddToDailyTakings =
+    [<Fact>]
+    member this.testAddToDailyTakings() =
         let result = addToTakings 3 2
-        Assert.AreEqual(5, result)
+        Assert.Equal(5, result)
