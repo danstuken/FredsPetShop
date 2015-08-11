@@ -70,6 +70,7 @@
     <Compile Include="Program.fs" />
     <None Include="App.config" />
     <Content Include="packages.config" />
+    <Compile Include="RecordsOptionTypesDUsEtc.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
