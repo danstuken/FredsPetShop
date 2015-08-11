@@ -1,6 +1,6 @@
 ﻿#if INTERACTIVE
 #else
-module TestModule
+module ArraysAndSequences
 #endif
 
 let arr = [|1;2;3;|]
@@ -68,5 +68,20 @@ let printSquares min max =
     |> Array.map (fun i -> square i)
     |> Array.iter (fun s -> printfn "%i" s)
 
+//.net enumerables are F# sequences
+let someFiles = System.IO.Directory.EnumerateFiles(@"C:\temp\*.txt")
 
+let smallNumbers = Seq.init 100 (fun i -> i)
 
+let moreNumbers = 
+    seq {
+        for i in 0..99 do
+            yield i
+    }
+
+open System.IO
+let someBigFiles =
+    Directory.EnumerateFiles(@"C:\windows")
+    |> Seq.map (fun f -> FileInfo f)
+    |> Seq.filter (fun f -> f.Length > 1000000L)
+    |> Seq.map (fun f -> f.Name)
