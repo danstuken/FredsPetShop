@@ -15,14 +15,17 @@ type Beastie =
 let vatAt18Percent salePrice =
     salePrice * 0.18
 
+let baseLegTax =
+    0.1
+
 let legTaxForTwoLegs salePrice =
-    salePrice * 0.2
+    salePrice * baseLegTax * float 2
 
 let legTaxForFourLegs salePrice =
-    salePrice * 0.4
+    salePrice * baseLegTax * float 4
 
 let legTaxForEightLegs salePrice =
-    salePrice * 0.8
+    salePrice * baseLegTax * float 8
 
 let beastieVat (beastie:Beastie) =
     match beastie with
