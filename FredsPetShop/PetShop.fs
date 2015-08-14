@@ -2,6 +2,7 @@
 
 type LeggedBeastie = 
     {
+        Species: string
         NetPrice: float
     }
 
