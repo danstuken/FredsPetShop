@@ -4,7 +4,7 @@ open Xunit
 
 type LeggedBeastie = 
     {
-        SalePrice: float
+        NetPrice: float
     }
 
 type Beastie =
@@ -29,15 +29,21 @@ let legTaxForEightLegs salePrice =
 
 let beastieVat (beastie:Beastie) =
     match beastie with
-    | TwoLeggedBeastie b -> vatAt18Percent b.SalePrice
-    | FourLeggedBeastie b -> vatAt18Percent b.SalePrice
-    | EightLeggedBeastie b -> vatAt18Percent b.SalePrice
+    | TwoLeggedBeastie b -> vatAt18Percent b.NetPrice
+    | FourLeggedBeastie b -> vatAt18Percent b.NetPrice
+    | EightLeggedBeastie b -> vatAt18Percent b.NetPrice
 
 let beastieLegTax (beastie: Beastie) =
     match beastie with
-    | TwoLeggedBeastie b -> legTaxForTwoLegs b.SalePrice
-    | FourLeggedBeastie b -> legTaxForFourLegs b.SalePrice
-    | EightLeggedBeastie b -> legTaxForEightLegs b.SalePrice
+    | TwoLeggedBeastie b -> legTaxForTwoLegs b.NetPrice
+    | FourLeggedBeastie b -> legTaxForFourLegs b.NetPrice
+    | EightLeggedBeastie b -> legTaxForEightLegs b.NetPrice
+
+let beastieSalePrice (beastie: Beastie) =
+    match beastie with
+    | TwoLeggedBeastie b -> b.NetPrice
+    | FourLeggedBeastie b -> b.NetPrice
+    | EightLeggedBeastie b -> b.NetPrice
 
 let sumOfBeastieLegTax (beasties: Beastie[]) =
     beasties
@@ -48,6 +54,13 @@ let sumOfBeastieVat (beasties: Beastie[]) =
     beasties
     |> Array.map (fun b -> beastieVat b)
     |> Array.sum
+
+let beastieGrossPrice (beastie: Beastie) =
+    beastieSalePrice beastie + beastieVat beastie
+
+let sumOfBeastieSalesPrice (beasties: Beastie[]) =
+    beasties
+    |> Array.sumBy (fun b -> beastieGrossPrice b)
 
 let isInRange expectedFloat actualFloat =
     let maxAcceptableValue = expectedFloat + 0.0001
@@ -60,31 +73,31 @@ let vatAt18Percent_ShouldBe_18Percent_Of_SalePrice() =
 
 [<Fact>]
 let beastieVat_ShouldBe_18Percent_Of_BeastieSalePrice() =
-    let b = TwoLeggedBeastie { SalePrice = 25.0 }
+    let b = TwoLeggedBeastie { NetPrice = 25.0 }
     Assert.True(isInRange 4.5 (beastieVat b))
 
 [<Fact>]
 let beastieLegTax_ShouldBe_20Percent_Of_TwoLeggedBeastieSalePrice() =
-    let b = TwoLeggedBeastie { SalePrice = 25.0 }
+    let b = TwoLeggedBeastie { NetPrice = 25.0 }
     Assert.True(isInRange 5.0 (beastieLegTax b))
 
 [<Fact>]
 let beastieLegTax_ShouldBe_40Percent_Of_FourLeggedBeastieSalePrice() =
-    let b = FourLeggedBeastie { SalePrice = 25.0 }
+    let b = FourLeggedBeastie { NetPrice = 25.0 }
     Assert.True(isInRange 10.0 (beastieLegTax b))
 
 [<Fact>]
 let beastieLegTax_ShouldBe_80Percent_Of_EightLeggedBeastieSalePrice() =
-    let b = EightLeggedBeastie { SalePrice = 25.0 }
+    let b = EightLeggedBeastie { NetPrice = 25.0 }
     Assert.True(isInRange 20.0 (beastieLegTax b))
 
 [<Fact>]
 let beastieCollectionLegTax_ShouldBe_SumOfAllLegTaxInCollection() =
     let collectionOfB = 
         [|
-            EightLeggedBeastie { SalePrice = 20.0 }
-            TwoLeggedBeastie { SalePrice = 20.0 }
-            FourLeggedBeastie { SalePrice = 20.0 }
+            EightLeggedBeastie { NetPrice = 20.0 }
+            TwoLeggedBeastie { NetPrice = 20.0 }
+            FourLeggedBeastie { NetPrice = 20.0 }
         |]
     Assert.True(isInRange 28.0 (sumOfBeastieLegTax collectionOfB))
 
@@ -92,8 +105,18 @@ let beastieCollectionLegTax_ShouldBe_SumOfAllLegTaxInCollection() =
 let beastieCollectionVat_ShouldBe_SumOfAllVatInCollection() =
     let collectionOfB = 
         [|
-            EightLeggedBeastie { SalePrice = 20.0 }
-            TwoLeggedBeastie { SalePrice = 20.0 }
-            FourLeggedBeastie { SalePrice = 20.0 }
+            EightLeggedBeastie { NetPrice = 20.0 }
+            TwoLeggedBeastie { NetPrice = 20.0 }
+            FourLeggedBeastie { NetPrice = 20.0 }
         |]
     Assert.True(isInRange 10.8 (sumOfBeastieVat collectionOfB))
+
+[<Fact>]
+let beastieCollectionSalesPrice_ShouldBe_SumIfAllSalesPrices() =
+    let collectionOfB = 
+        [|
+            EightLeggedBeastie { NetPrice = 20.0 }
+            TwoLeggedBeastie { NetPrice = 20.0 }
+            FourLeggedBeastie { NetPrice = 20.0 }
+        |]
+    Assert.True(isInRange 70.8 (sumOfBeastieSalesPrice collectionOfB))
