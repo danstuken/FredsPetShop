@@ -38,7 +38,7 @@ let beastieLegTax (beastie: Beastie) =
     | FourLeggedBeastie b -> legTaxForFourLegs b.NetPrice
     | EightLeggedBeastie b -> legTaxForEightLegs b.NetPrice
 
-let beastieSalePrice (beastie: Beastie) =
+let beastieNetPrice (beastie: Beastie) =
     match beastie with
     | TwoLeggedBeastie b -> b.NetPrice
     | FourLeggedBeastie b -> b.NetPrice
@@ -54,10 +54,10 @@ let sumOfBeastieVat (beasties: Beastie[]) =
     |> Array.map (fun b -> beastieVat b)
     |> Array.sum
 
-let beastieGrossPrice (beastie: Beastie) =
-    beastieSalePrice beastie + beastieVat beastie
+let beastieSalePrice (beastie: Beastie) =
+    beastieNetPrice beastie + beastieVat beastie
 
 let sumOfBeastieSalesPrice (beasties: Beastie[]) =
     beasties
-    |> Array.sumBy (fun b -> beastieGrossPrice b)
+    |> Array.sumBy (fun b -> beastieSalePrice b)
 

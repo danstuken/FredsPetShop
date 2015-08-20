@@ -70,3 +70,18 @@ let beastieCollectionSalesPrice_ShouldBe_SumIfAllSalesPrices() =
             buildTestFourLeggedBeastie 20.0
         |]
     Assert.True(isInRange 70.8 (sumOfBeastieSalesPrice collectionOfB))
+
+let beastieName (beastie: Beastie) =
+    match beastie with
+    | TwoLeggedBeastie b -> b.Species
+    | FourLeggedBeastie b -> b.Species
+    | EightLeggedBeastie b -> b.Species
+
+let beastieDisplayString (beastie: Beastie) =
+    sprintf "%s @ £%0.2f" (beastieName beastie) (beastieSalePrice beastie)
+
+[<Fact>]
+let beastieDisplayString_ShouldBe_NameWithSalesPrice() =
+    let beastieToDisplay = TwoLeggedBeastie { Species = "Kangaroo"; NetPrice = 67.80 }
+    let expectedDisplayString = "Kangaroo @ £80.00"
+    Assert.Equal(expectedDisplayString, (beastieDisplayString beastieToDisplay))
