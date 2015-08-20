@@ -72,6 +72,7 @@
     <Compile Include="RecordsOptionTypesDUsEtc.fs" />
     <None Include="App.config" />
     <Compile Include="PetShop.fs" />
+    <Compile Include="PetShopMenu.fs" />
     <Compile Include="PetShopTests.fs" />
     <Compile Include="Program.fs" />
     <Content Include="packages.config" />

@@ -2,6 +2,7 @@
 
 open Xunit
 open PetShop
+open PetShopMenu
 
 let isInRange expectedFloat actualFloat =
     let maxAcceptableValue = expectedFloat + 0.0001
@@ -70,15 +71,6 @@ let beastieCollectionSalesPrice_ShouldBe_SumIfAllSalesPrices() =
             buildTestFourLeggedBeastie 20.0
         |]
     Assert.True(isInRange 70.8 (sumOfBeastieSalesPrice collectionOfB))
-
-let beastieName (beastie: Beastie) =
-    match beastie with
-    | TwoLeggedBeastie b -> b.Species
-    | FourLeggedBeastie b -> b.Species
-    | EightLeggedBeastie b -> b.Species
-
-let beastieDisplayString (beastie: Beastie) =
-    sprintf "%s @ £%0.2f" (beastieName beastie) (beastieSalePrice beastie)
 
 [<Fact>]
 let beastieDisplayString_ShouldBe_NameWithSalesPrice() =
