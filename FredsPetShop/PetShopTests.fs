@@ -77,3 +77,18 @@ let beastieDisplayString_ShouldBe_NameWithSalesPrice() =
     let beastieToDisplay = TwoLeggedBeastie { Species = "Kangaroo"; NetPrice = 67.80 }
     let expectedDisplayString = "Kangaroo @ £80.00"
     Assert.Equal(expectedDisplayString, (beastieDisplayString beastieToDisplay))
+
+[<Fact>]
+let beastieDisplayMenu_ShouldBe_NamesWithSalesPrice() =
+    let beastieDisplayMenu = buildBeastieDisplayMenu
+    let expectedDisplayMenu = @"0. Kangaroo @ £80.00
+1. Rabbit @ £25.00
+2. Squirrel @ £10.00
+3. Rat @ £15.00
+4. Tarantula @ £75.00"
+    Assert.Equal(expectedDisplayMenu, beastieDisplayMenu)
+
+//
+//[<Fact>]
+//let beastieMenuDisplay_WhenNotAnNumber_RedisplaysMenu() =
+//    let beastieMenu = buildBeastieDisplayMenu
