@@ -88,7 +88,3 @@ let beastieDisplayMenu_ShouldBe_NamesWithSalesPrice() =
 4. Tarantula @ £75.00"
     Assert.Equal(expectedDisplayMenu, beastieDisplayMenu)
 
-//
-//[<Fact>]
-//let beastieMenuDisplay_WhenNotAnNumber_RedisplaysMenu() =
-//    let beastieMenu = buildBeastieDisplayMenu

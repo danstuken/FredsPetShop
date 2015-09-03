@@ -25,3 +25,13 @@ let buildBeastieDisplayMenu =
     |> Array.map (fun b -> beastieDisplayString b)
     |> Array.mapi (fun i s -> sprintf "%d. %s" i s)
     |> Array.reduce (fun a b -> sprintf "%s\r\n%s" a b)
+
+let beastieMenuDisplay displayFunc =
+    displayFunc buildBeastieDisplayMenu
+
+let handleMenuResponse responseReader responseMap =
+    responseReader
+    |> responseMap 
+
+
+ 
