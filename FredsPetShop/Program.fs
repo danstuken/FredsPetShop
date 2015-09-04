@@ -3,38 +3,15 @@
 open PetShop
 open PetShopMenu
 
-let dailyBeasties = new System.Collections.Generic.List<Beastie>()
-
-let parseKey key =
-    match key with
-    |"0"|"1"|"2"|"3"|"4" -> 
-        let beastie = buildItemsForSale.[System.Int32.Parse key]
-        dailyBeasties.Add(beastie)
-    | _ -> ()
-
-let inputSequenceProcessor key = 
-    match key with
-    | "X" -> Some(key)
-    | _ -> parseKey key; None
-
-let menuAction = fun _ ->
-    beastieMenuDisplay (fun s -> 
-        System.Console.Clear()
-        printfn "%s" s
-    )
-    System.Console.ReadLine()
-
 [<EntryPoint>]
 let main argv = 
+    runMenu
 
-    let inputSequence = Seq.initInfinite (fun x -> menuAction())
-    Seq.pick inputSequenceProcessor inputSequence |> ignore
+    let dailyBeastieArray = beastieArrayFromList dailyBeasties
 
-    let dailyBeastieList = beastieArrayFromList dailyBeasties
-
-    let dailyTotalSales = sumOfBeastieSalesPrice dailyBeastieList
-    let dailyTotalVat = sumOfBeastieVat dailyBeastieList
-    let dailyTotalLegTax = sumOfBeastieLegTax dailyBeastieList
+    let dailyTotalSales = sumOfBeastieSalesPrice dailyBeastieArray
+    let dailyTotalVat = sumOfBeastieVat dailyBeastieArray
+    let dailyTotalLegTax = sumOfBeastieLegTax dailyBeastieArray
 
     printfn "Total Sales: £%0.2f Total VAT: £%0.2f Total Leg Tax £%0.2f" dailyTotalSales dailyTotalVat dailyTotalLegTax
     printfn "Good night"
