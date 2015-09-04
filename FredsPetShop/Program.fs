@@ -7,27 +7,37 @@ let dailyBeasties = new System.Collections.Generic.List<Beastie>()
 
 let parseKey key =
     match key with
-    |"0"|"1"|"2"|"3"|"4" -> dailyBeasties.Add(buildItemsForSale.[System.Int32.Parse key])
+    |"0"|"1"|"2"|"3"|"4" -> 
+        let beastie = buildItemsForSale.[System.Int32.Parse key]
+        dailyBeasties.Add(beastie)
     | _ -> ()
 
 let inputSequenceProcessor key = 
     match key with
     | "X" -> Some(key)
-    | _ -> ignore (fun _ -> parseKey key); None
+    | _ -> parseKey key; None
 
 let menuAction = fun _ ->
-    beastieMenuDisplay (fun s -> printfn "%s" s)
+    beastieMenuDisplay (fun s -> 
+        System.Console.Clear()
+        printfn "%s" s
+    )
     System.Console.ReadLine()
 
 [<EntryPoint>]
 let main argv = 
 
     let inputSequence = Seq.initInfinite (fun x -> menuAction())
-
     Seq.pick inputSequenceProcessor inputSequence |> ignore
-    printf "Good night"
+
+    let dailyBeastieList = beastieArrayFromList dailyBeasties
+
+    let dailyTotalSales = sumOfBeastieSalesPrice dailyBeastieList
+    let dailyTotalVat = sumOfBeastieVat dailyBeastieList
+    let dailyTotalLegTax = sumOfBeastieLegTax dailyBeastieList
+
+    printfn "Total Sales: £%0.2f Total VAT: £%0.2f Total Leg Tax £%0.2f" dailyTotalSales dailyTotalVat dailyTotalLegTax
+    printfn "Good night"
     System.Console.ReadKey() |> ignore
-    //let chosenBeastie = buildItemsForSale.[System.Int32.Parse stringResponse]
-    //printfn "Chosen: %s" (beastieDisplayString chosenBeastie)
-    //let quit = System.Console.ReadKey()
-    0 // return an integer exit code    
+
+    0

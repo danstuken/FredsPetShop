@@ -61,3 +61,16 @@ let sumOfBeastieSalesPrice (beasties: Beastie[]) =
     beasties
     |> Array.sumBy (fun b -> beastieSalePrice b)
 
+let beastieName (beastie: Beastie) =
+    match beastie with
+    | TwoLeggedBeastie b -> b.Species
+    | FourLeggedBeastie b -> b.Species
+    | EightLeggedBeastie b -> b.Species
+
+let beastieArrayFromList (beasties: System.Collections.Generic.List<Beastie>) =
+    [|
+        for beastie in beasties do
+            yield beastie
+    |]
+    
+
