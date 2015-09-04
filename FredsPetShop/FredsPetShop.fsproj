@@ -68,8 +68,6 @@
   </Target>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="ArraysAndSequences.fs" />
-    <Compile Include="RecordsOptionTypesDUsEtc.fs" />
     <None Include="App.config" />
     <Compile Include="PetShop.fs" />
     <Compile Include="PetShopMenu.fs" />
