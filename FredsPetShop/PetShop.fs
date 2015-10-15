@@ -1,76 +1,53 @@
-﻿module PetShop
+﻿namespace FredsPetShop
 
-type LeggedBeastie = 
-    {
-        Species: string
-        NetPrice: float
-    }
+module PetShop =
 
-type Beastie =
-    | TwoLeggedBeastie of LeggedBeastie
-    | FourLeggedBeastie of LeggedBeastie
-    | EightLeggedBeastie of LeggedBeastie
+    type AnimalForSale(species, numberOfLegs, netRetailPrice) =
+        member a.Species: string = species
+        member a.NumberOfLegs: int = numberOfLegs
+        member a.NetRetailPrice = netRetailPrice
 
-let vatAt18Percent salePrice =
-    salePrice * 0.18
+    let vatAt18Percent salePrice =
+        salePrice * 0.18
 
-let baseLegTax =
-    0.1
+    let baseLegTax =
+        0.1
 
-let legTaxForTwoLegs salePrice =
-    salePrice * baseLegTax * float 2
+    let beastieVat (beastie:AnimalForSale) =
+        vatAt18Percent beastie.NetRetailPrice
 
-let legTaxForFourLegs salePrice =
-    salePrice * baseLegTax * float 4
+    let beastieLegTax (beastie: AnimalForSale) =
+        beastie.NetRetailPrice * baseLegTax * float beastie.NumberOfLegs
 
-let legTaxForEightLegs salePrice =
-    salePrice * baseLegTax * float 8
+    let sumOfBeastieLegTax (beasties: AnimalForSale[]) =
+        beasties
+        |> Array.map (fun b -> beastieLegTax b)
+        |> Array.sum
 
-let beastieVat (beastie:Beastie) =
-    match beastie with
-    | TwoLeggedBeastie b -> vatAt18Percent b.NetPrice
-    | FourLeggedBeastie b -> vatAt18Percent b.NetPrice
-    | EightLeggedBeastie b -> vatAt18Percent b.NetPrice
+    let sumOfBeastieVat (beasties: AnimalForSale[]) =
+        beasties
+        |> Array.map (fun b -> beastieVat b)
+        |> Array.sum
 
-let beastieLegTax (beastie: Beastie) =
-    match beastie with
-    | TwoLeggedBeastie b -> legTaxForTwoLegs b.NetPrice
-    | FourLeggedBeastie b -> legTaxForFourLegs b.NetPrice
-    | EightLeggedBeastie b -> legTaxForEightLegs b.NetPrice
+    let beastieSalePrice (beastie: AnimalForSale) =
+        beastie.NetRetailPrice + beastieVat beastie
 
-let beastieNetPrice (beastie: Beastie) =
-    match beastie with
-    | TwoLeggedBeastie b -> b.NetPrice
-    | FourLeggedBeastie b -> b.NetPrice
-    | EightLeggedBeastie b -> b.NetPrice
+    let sumOfBeastieSalesPrice (beasties: AnimalForSale[]) =
+        beasties
+        |> Array.sumBy (fun b -> beastieSalePrice b)
 
-let sumOfBeastieLegTax (beasties: Beastie[]) =
-    beasties
-    |> Array.map (fun b -> beastieLegTax b)
-    |> Array.sum
-
-let sumOfBeastieVat (beasties: Beastie[]) =
-    beasties
-    |> Array.map (fun b -> beastieVat b)
-    |> Array.sum
-
-let beastieSalePrice (beastie: Beastie) =
-    beastieNetPrice beastie + beastieVat beastie
-
-let sumOfBeastieSalesPrice (beasties: Beastie[]) =
-    beasties
-    |> Array.sumBy (fun b -> beastieSalePrice b)
-
-let beastieName (beastie: Beastie) =
-    match beastie with
-    | TwoLeggedBeastie b -> b.Species
-    | FourLeggedBeastie b -> b.Species
-    | EightLeggedBeastie b -> b.Species
-
-let beastieArrayFromList (beasties: System.Collections.Generic.List<Beastie>) =
-    [|
-        for beastie in beasties do
-            yield beastie
-    |]
+    let beastieArrayFromList (beasties: System.Collections.Generic.List<AnimalForSale>) =
+        [|
+            for beastie in beasties do
+                yield beastie
+        |]
     
-
+    type PetShopConfiguration =
+        static member ListConfiguredAnimals() =
+            [|
+                yield new AnimalForSale("Kangaroo", 2, 67.80)
+                yield new AnimalForSale("Rabbit", 4, 21.19)
+                yield new AnimalForSale("Squirrel", 4, 8.474)
+                yield new AnimalForSale("Rat", 4, 12.71)
+                yield new AnimalForSale("Tarantula", 8, 63.56)
+            |]

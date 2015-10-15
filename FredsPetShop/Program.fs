@@ -1,11 +1,11 @@
 ﻿// Learn more about F# at http://fsharp.org
 // See the 'F# Tutorial' project for more help.
-open PetShop
-open PetShopMenu
+open FredsPetShop.PetShop
+open FredsPetShop.PetShopMenu
 
 [<EntryPoint>]
 let main argv = 
-    runMenu
+    openPetShop()
 
     let dailyBeastieArray = beastieArrayFromList dailyBeasties
 
