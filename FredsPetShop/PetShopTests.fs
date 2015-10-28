@@ -34,11 +34,6 @@ module PetShopTests =
         AssertIsInRange 4.5 (beastieVat b)
 
     [<Fact>]
-    let beastieLegTax_ShouldBe_20Percent_Of_TwoLeggedBeastieSalePrice() =
-        let b = buildTestTwoLeggedBeastie 25.0
-        AssertIsInRange 5.0 (beastieLegTax b)
-
-    [<Fact>]
     let beastieLegTax_ShouldBe_40Percent_Of_FourLeggedBeastieSalePrice() =
         let b = buildTestFourLeggedBeastie 25.0
         AssertIsInRange 10.0 (beastieLegTax b)
@@ -100,3 +95,10 @@ module PetShopTests =
         let profit = beastieSaleProfit beastieToSell
 
         AssertIsInRange 15.0 profit
+
+    [<Fact>]
+    let beastieSaleLegTaxForTwoLegs_ShouldBe_20PercentProfitOnSale() =
+        let beastieToSell = buildTestBeastie "Kangaroo" 2 25.0 11.8
+        let beastieLegTax = beastieLegTax beastieToSell
+
+        AssertIsInRange 3.0 beastieLegTax

@@ -23,8 +23,14 @@ module PetShop =
     let beastieVat (beastie:AnimalForSale) =
         vatAt18Percent beastie.NetRetailPrice
 
+    let beastieSalePrice (beastie: AnimalForSale) =
+        beastie.NetRetailPrice + beastieVat beastie
+
+    let beastieSaleProfit (beastie: AnimalForSale) =
+        beastie.NetRetailPrice - (netPriceFromGross beastie.GrossWholesalePrice)
+
     let beastieLegTax (beastie: AnimalForSale) =
-        beastie.NetRetailPrice * baseLegTax * float beastie.NumberOfLegs
+        (beastieSaleProfit beastie) * baseLegTax * float beastie.NumberOfLegs
 
     let sumOfBeastieLegTax (beasties: AnimalForSale[]) =
         beasties
@@ -36,11 +42,6 @@ module PetShop =
         |> Array.map (fun b -> beastieVat b)
         |> Array.sum
 
-    let beastieSalePrice (beastie: AnimalForSale) =
-        beastie.NetRetailPrice + beastieVat beastie
-
-    let beastieSaleProfit (beastie: AnimalForSale) =
-        beastie.NetRetailPrice - (netPriceFromGross beastie.GrossWholesalePrice)
 
     let sumOfBeastieSalesPrice (beasties: AnimalForSale[]) =
         beasties
