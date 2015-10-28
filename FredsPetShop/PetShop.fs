@@ -2,13 +2,20 @@
 
 module PetShop =
 
-    type AnimalForSale(species, numberOfLegs, netRetailPrice) =
+    type AnimalForSale(species, numberOfLegs, netRetailPrice, grossWholesalePrice) =
         member a.Species: string = species
         member a.NumberOfLegs: int = numberOfLegs
         member a.NetRetailPrice = netRetailPrice
+        member a.GrossWholesalePrice = grossWholesalePrice
+
+    let vatRate =
+        0.18
 
     let vatAt18Percent salePrice =
-        salePrice * 0.18
+        salePrice * vatRate
+
+    let netPriceFromGross grossPrice = 
+        grossPrice / ((float 1) + vatRate)
 
     let baseLegTax =
         0.1
@@ -32,6 +39,9 @@ module PetShop =
     let beastieSalePrice (beastie: AnimalForSale) =
         beastie.NetRetailPrice + beastieVat beastie
 
+    let beastieSaleProfit (beastie: AnimalForSale) =
+        beastie.NetRetailPrice - (netPriceFromGross beastie.GrossWholesalePrice)
+
     let sumOfBeastieSalesPrice (beasties: AnimalForSale[]) =
         beasties
         |> Array.sumBy (fun b -> beastieSalePrice b)
@@ -45,9 +55,9 @@ module PetShop =
     type PetShopConfiguration =
         static member ListConfiguredAnimals() =
             [|
-                yield new AnimalForSale("Kangaroo", 2, 67.80)
-                yield new AnimalForSale("Rabbit", 4, 21.19)
-                yield new AnimalForSale("Squirrel", 4, 8.474)
-                yield new AnimalForSale("Rat", 4, 12.71)
-                yield new AnimalForSale("Tarantula", 8, 63.56)
+                yield new AnimalForSale("Kangaroo", 2, 67.80, 48.0)
+                yield new AnimalForSale("Rabbit", 4, 21.19, 15.0)
+                yield new AnimalForSale("Squirrel", 4, 8.474, 6.0)
+                yield new AnimalForSale("Rat", 4, 12.71, 9.0)
+                yield new AnimalForSale("Tarantula", 8, 63.56, 45.0)
             |]
