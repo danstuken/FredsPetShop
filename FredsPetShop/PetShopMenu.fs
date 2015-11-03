@@ -19,12 +19,12 @@ module PetShopMenu =
         |> Array.reduce (fun a b -> sprintf "%s\r\n%s" a b)
 
     let dailySummary() =
-        let dailyBeastieArray = beastieArrayFromList dailyBeasties
-        let dailyTotalSales = sumOfBeastieSalesPrice dailyBeastieArray
-        let dailyTotalVat = sumOfBeastieVat dailyBeastieArray
-        let dailyTotalLegTax = sumOfBeastieLegTax dailyBeastieArray
+        let currentBeastieArray = beastieArrayFromList dailyBeasties
+        let currentTotalSales = sumOfBeastieSalesPrice currentBeastieArray
+        let currentTotalVat = sumOfBeastieVat currentBeastieArray
+        let currentTotalLegTax = sumOfBeastieLegTax currentBeastieArray
 
-        sprintf "Current Sales: £%0.2f Total VAT: £%0.2f Total Leg Tax £%0.2f" dailyTotalSales dailyTotalVat dailyTotalLegTax
+        sprintf "Current Sales: £%0.2f Total VAT: £%0.2f Total Leg Tax £%0.2f" currentTotalSales currentTotalVat currentTotalLegTax
 
     let parseKey key =
         match key with
