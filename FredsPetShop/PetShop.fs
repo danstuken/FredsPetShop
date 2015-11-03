@@ -32,16 +32,16 @@ module PetShop =
     let beastieLegTax (beastie: AnimalForSale) =
         (beastieSaleProfit beastie) * baseLegTax * float beastie.NumberOfLegs
 
-    let sumOfBeastieLegTax (beasties: AnimalForSale[]) =
+    let beastieAggregator (beasties: AnimalForSale[]) mapFunc =
         beasties
-        |> Array.map (fun b -> beastieLegTax b)
+        |> Array.map(mapFunc)
         |> Array.sum
+
+    let sumOfBeastieLegTax (beasties: AnimalForSale[]) =
+        beastieAggregator beasties (fun b -> beastieLegTax b)
 
     let sumOfBeastieVat (beasties: AnimalForSale[]) =
-        beasties
-        |> Array.map (fun b -> beastieVat b)
-        |> Array.sum
-
+        beastieAggregator beasties (fun b -> beastieVat b)
 
     let sumOfBeastieSalesPrice (beasties: AnimalForSale[]) =
         beasties
