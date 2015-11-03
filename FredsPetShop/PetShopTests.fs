@@ -16,13 +16,13 @@ module PetShopTests =
         new AnimalForSale(species, legCount, netRetailPrice, grossWholesalePrice)
 
     let buildTestTwoLeggedBeastie netPrice = 
-        buildTestBeastie "TestBeast" 2 netPrice 0.0
+        buildTestBeastie "TestBeast" 2 netPrice 1.0
 
     let buildTestFourLeggedBeastie netPrice =
-        buildTestBeastie "TestBeast" 4 netPrice 0.0
+        buildTestBeastie "TestBeast" 4 netPrice 1.0
 
     let buildTestEightLeggedBeastie netPrice =
-        buildTestBeastie "TestBeast" 8 netPrice 0.0
+        buildTestBeastie "TestBeast" 8 netPrice 1.0
 
     [<Fact>]
     let vatAt18Percent_ShouldBe_18Percent_Of_SalePrice() =
@@ -41,7 +41,7 @@ module PetShopTests =
                 buildTestTwoLeggedBeastie 20.0
                 buildTestFourLeggedBeastie 20.0
             |]
-        AssertIsInRange 28.0 (sumOfBeastieLegTax collectionOfB)
+        AssertIsInRange 26.81 (sumOfBeastieLegTax collectionOfB)
 
     [<Fact>]
     let beastieCollectionVat_ShouldBe_SumOfAllVatInCollection() =
@@ -54,7 +54,7 @@ module PetShopTests =
         AssertIsInRange 10.8 (sumOfBeastieVat collectionOfB)
 
     [<Fact>]
-    let beastieCollectionSalesPrice_ShouldBe_SumIfAllSalesPrices() =
+    let beastieCollectionSalesPrice_ShouldBe_SumOfAllSalesPrices() =
         let collectionOfB = 
             [|
                 buildTestEightLeggedBeastie 20.0
@@ -62,6 +62,16 @@ module PetShopTests =
                 buildTestFourLeggedBeastie 20.0
             |]
         AssertIsInRange 70.8 (sumOfBeastieSalesPrice collectionOfB)
+
+    [<Fact>]
+    let beastieCollectionProfit_ShouldBe_SumOfAllSalesProfit() =
+        let collectionOfB =
+            [|
+                buildTestEightLeggedBeastie 20.0
+                buildTestTwoLeggedBeastie 20.0
+                buildTestFourLeggedBeastie 20.0
+            |]
+        AssertIsInRange 57.46 (sumOfBeastieSalesProfit collectionOfB)
 
     [<Fact>]
     let beastieDisplayString_ShouldBe_NameWithSalesPrice() =

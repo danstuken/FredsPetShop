@@ -34,18 +34,21 @@ module PetShop =
 
     let beastieAggregator (beasties: AnimalForSale[]) mapFunc =
         beasties
-        |> Array.map(mapFunc)
+        |> Array.map(fun b -> mapFunc b)
         |> Array.sum
+        |> (fun (x: float) -> System.Math.Round(x, 2, System.MidpointRounding.AwayFromZero))
 
     let sumOfBeastieLegTax (beasties: AnimalForSale[]) =
-        beastieAggregator beasties (fun b -> beastieLegTax b)
+        beastieAggregator beasties beastieLegTax
 
     let sumOfBeastieVat (beasties: AnimalForSale[]) =
-        beastieAggregator beasties (fun b -> beastieVat b)
+        beastieAggregator beasties beastieVat
+
+    let sumOfBeastieSalesProfit (beasties: AnimalForSale[]) =
+        beastieAggregator beasties beastieSaleProfit
 
     let sumOfBeastieSalesPrice (beasties: AnimalForSale[]) =
-        beasties
-        |> Array.sumBy (fun b -> beastieSalePrice b)
+        beastieAggregator beasties beastieSalePrice
 
     let beastieArrayFromList (beasties: System.Collections.Generic.List<AnimalForSale>) =
         [|
