@@ -12,18 +12,19 @@ module PetShopMenu =
     let beastieDisplayString (beastie: AnimalForSale) =
         sprintf "%s @ £%0.2f" beastie.Species (beastieSalePrice beastie)
 
-    let buildBeastieDisplayMenu =
+    let buildBeastieDisplayMenu() =
         buildItemsForSale
         |> Array.map (fun b -> beastieDisplayString b)
         |> Array.mapi (fun i s -> sprintf "%d. %s" i s)
         |> Array.reduce (fun a b -> sprintf "%s\r\n%s" a b)
 
-    let beastieMenuDisplay displayFunc =
-        displayFunc buildBeastieDisplayMenu
+    let dailySummary() =
+        let dailyBeastieArray = beastieArrayFromList dailyBeasties
+        let dailyTotalSales = sumOfBeastieSalesPrice dailyBeastieArray
+        let dailyTotalVat = sumOfBeastieVat dailyBeastieArray
+        let dailyTotalLegTax = sumOfBeastieLegTax dailyBeastieArray
 
-    let handleMenuResponse responseReader responseMap =
-        responseReader
-        |> responseMap 
+        sprintf "Current Sales: £%0.2f Total VAT: £%0.2f Total Leg Tax £%0.2f" dailyTotalSales dailyTotalVat dailyTotalLegTax
 
     let parseKey key =
         match key with
@@ -36,15 +37,20 @@ module PetShopMenu =
         match key with
         | "X" -> Some(key)
         | _ -> parseKey key; None
+       
+    let displayMainScreen menuFunction summaryFunction =
+        System.Console.Clear()
+        printfn "%s" (menuFunction())
+        printfn ""
+        printfn "%s" (summaryFunction())
+        printfn ""
+        printfn "Press X to quit"
 
-    let menuAction = fun _ ->
-        beastieMenuDisplay (fun s -> 
-            System.Console.Clear()
-            printfn "%s" s
-        )
-        System.Console.ReadLine()
+    let menuAction idx =
+        displayMainScreen buildBeastieDisplayMenu dailySummary
+        string (System.Console.ReadKey().KeyChar)
 
     let openPetShop() =
-        let inputSequence = Seq.initInfinite (fun x -> menuAction())
+        let inputSequence = Seq.initInfinite menuAction
         Seq.pick inputSequenceProcessor inputSequence |> ignore
  

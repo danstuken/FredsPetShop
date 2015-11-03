@@ -77,7 +77,7 @@ module PetShopTests =
 2. Squirrel @ £10.00
 3. Rat @ £15.00
 4. Tarantula @ £75.00"
-        Assert.Equal(expectedDisplayMenu, beastieDisplayMenu)
+        Assert.Equal(expectedDisplayMenu, beastieDisplayMenu())
 
     [<Fact>]
     let beastieSaleProfit_ShouldBe_DifferenceBetweenNetRetailAndNetWholesalePrices() =
